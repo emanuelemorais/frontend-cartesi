@@ -11,8 +11,8 @@ import {
   size,
   slice,
 } from "viem";
-import { chains, getClient, getWalletClient, getL2Client } from "./utils/chain";
-import { INodeComponentProps } from "./utils/models";
+import { chains, getClient, getWalletClient, getL2Client } from "../../utils/chain";
+import { INodeComponentProps } from "../../utils/models";
 import { Output } from "@cartesi/viem";
 
 type RpcFilter = {
@@ -20,7 +20,7 @@ type RpcFilter = {
   offset?: number;
   epochIndex?: bigint;
   inputIndex?: bigint;
-  outputType?: Hex;
+  outputType?: "DelegateCallVoucher" | "Notice" | "Voucher";
   voucherAddress?: Address;
 };
 
@@ -168,7 +168,7 @@ export const Outputs: React.FC<INodeComponentProps> = (
       offset,
       epochIndex: epochIndex ? BigInt(epochIndex) : undefined,
       inputIndex: inputIndex ? BigInt(inputIndex) : undefined,
-      outputType: outputType ? (outputType as Hex) : undefined,
+      outputType: outputType ? (outputType as "DelegateCallVoucher" | "Notice" | "Voucher") : undefined,
       voucherAddress: voucherAddress ? (voucherAddress as Address) : undefined,
     })
       .then((out) => setOutputs(out))

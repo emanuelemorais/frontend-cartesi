@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { fromHex, isHex } from "viem";
 import { Report } from "@cartesi/viem";
-import { getL2Client } from "./utils/chain";
-import { INodeComponentProps } from "./utils/models";
+import { getL2Client } from "../../utils/chain";
+import { INodeComponentProps } from "../../utils/models";
 
 type RpcFilter = {
   limit?: number;

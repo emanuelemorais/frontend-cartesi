@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { toHex, type Hex } from "viem";
 
-import { chains, getClient, getWalletClient } from "./utils/chain";
-import { INodeComponentProps } from "./utils/models";
+import { chains, getClient, getWalletClient } from "../../utils/chain";
+import { INodeComponentProps } from "../../utils/models";
 
 export const Input: React.FC<INodeComponentProps> = (
   props: INodeComponentProps,

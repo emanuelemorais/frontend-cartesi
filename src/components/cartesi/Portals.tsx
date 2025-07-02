@@ -14,8 +14,8 @@ import {
   erc20PortalAddress,
   erc721PortalAddress,
 } from "@cartesi/viem/abi";
-import { chains, getClient, getWalletClient } from "./utils/chain";
-import { INodeComponentProps } from "./utils/models";
+import { chains, getClient, getWalletClient } from "../../utils/chain";
+import { INodeComponentProps } from "../../utils/models";
 
 const humanErc1155Abi = [
   "function setApprovalForAll(address operator, bool approved)",

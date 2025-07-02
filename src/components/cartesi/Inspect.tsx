@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { fromHex, type Hex } from "viem";
 
-import { INodeComponentProps } from "./utils/models";
+import { INodeComponentProps } from "../../utils/models";
 
 interface Metadata {
   metadata: {
