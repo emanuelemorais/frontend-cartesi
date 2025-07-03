@@ -28,6 +28,8 @@ const Home: FC = () => {
   const { wallets } = useWallets();
   const wallet = wallets[0];
   const { setActiveWallet } = useSetActiveWallet();
+  const { data: hash, sendTransaction } = useSendTransaction();
+  
   const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy');
   
   useEffect(() => {
@@ -56,8 +58,6 @@ const Home: FC = () => {
   }
 
   const disableLogin = !ready || (ready && authenticated);
-
-  const { data: hash, sendTransaction } = useSendTransaction();
 
   const handleSendTransaction = () => {
     sendTransaction({
