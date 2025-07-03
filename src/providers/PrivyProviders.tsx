@@ -1,55 +1,25 @@
 'use client';
 
-import {PrivyProvider} from '@privy-io/react-auth';
+import { PrivyProvider } from '@privy-io/react-auth';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactNode } from 'react';
+import { WagmiProvider } from '@privy-io/wagmi';
+import { wagmiConfig } from '../config/wagmiConfig';
+import { privyConfig } from '../config/privyConfig';
 
-export default function Providers({children}: {children: React.ReactNode}) {
+export default function Providers({ children }: { children: ReactNode }) {
+  const queryClient = new QueryClient();
+
   return (
     <PrivyProvider
       appId={import.meta.env.VITE_PRIVY_APP_ID}
-    //   clientId="your-app-client-id"
-      config={{
-        appearance: {
-            walletChainType: 'ethereum-only',
-            walletList: ['metamask', 'rainbow', 'wallet_connect'],
-        },
-        embeddedWallets: {
-          ethereum: {
-            createOnLogin: 'users-without-wallets'
-          }
-        },
-        supportedChains: [
-          {
-            id: 31337,
-            name: 'Anvil Local',
-            nativeCurrency: {
-              name: 'ETH',
-              symbol: 'ETH',
-              decimals: 18
-            },
-            rpcUrls: {
-              default: {
-                http: ['http://127.0.0.1:8545']
-              }
-            }
-          }
-        ],
-        defaultChain: {
-          id: 31337, // Chain ID padrão do Anvil/Hardhat
-          name: 'Anvil Local',
-          nativeCurrency: {
-            name: 'ETH',
-            symbol: 'ETH',
-            decimals: 18
-          },
-          rpcUrls: {
-            default: {
-              http: ['http://127.0.0.1:8545']
-            }
-          }
-        }
-      }}
+      config={privyConfig}
     >
-      {children}
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={wagmiConfig}>
+          {children}
+        </WagmiProvider>
+      </QueryClientProvider>
     </PrivyProvider>
   );
 }

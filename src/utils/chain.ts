@@ -49,7 +49,7 @@ export async function getClient(chainId: number) {
   const chain = getChain(chainId);
   if (!chain) return null;
   return createPublicClient({
-    chain: chain,
+    chain: chain as any,
     transport: http(),
   }).extend(publicActionsL1());
 }
@@ -59,13 +59,13 @@ export async function getWalletClient(chainId: number) {
   const chain = getChain(chainId);
   if (!chain) return null;
 
-  const accounts = await window.ethereum.request({
+  const accounts = await (window.ethereum as any).request({
     method: "eth_requestAccounts",
   });
   return createWalletClient({
     account: accounts[0],
-    chain: chain,
-    transport: custom(window.ethereum),
+    chain: chain as any,
+    transport: custom(window.ethereum as any),
   }).extend(walletActionsL1());
 }
 

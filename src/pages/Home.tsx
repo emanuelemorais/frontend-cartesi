@@ -9,19 +9,32 @@ import { Outputs } from "../components/cartesi/Outputs";
 import { usePrivy, useLogin, useLinkAccount, useWallets } from '@privy-io/react-auth';
 import { CHAIN_CONFIG } from "../config/chainConfig";
 import { CARTESI_CONFIG } from "../config/cartesiConfig";
+import {useAccount} from 'wagmi';
+import { useSetActiveWallet } from '@privy-io/wagmi';
+import { useSendTransaction } from 'wagmi';
+import { parseEther } from 'viem';
+
 
 const Home: FC = () => {
   const [appAddress, setAppAddress] = useState<Hex | undefined>(CARTESI_CONFIG.appAddress);
   const [nodeAddress, setNodeAddress] = useState<string | undefined>(CARTESI_CONFIG.nodeAddress);
   const [chainId, setChainId] = useState<number>(CHAIN_CONFIG.id);
   const [walletAddress, setWalletAddress] = useState<`0x${string}` | undefined>();
+  const { address } = useAccount();
 
   const { ready, authenticated, user, logout } = usePrivy();
   const { login } = useLogin();
   const { linkEmail, linkWallet } = useLinkAccount();
   const { wallets } = useWallets();
   const wallet = wallets[0];
-
+  const { setActiveWallet } = useSetActiveWallet();
+  const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy');
+  
+  useEffect(() => {
+    if (embeddedWallet) {
+      setActiveWallet(embeddedWallet);
+    }
+  }, [embeddedWallet, setActiveWallet]);
 
   useEffect(() => {
     if (wallet && wallet.address) {
@@ -43,6 +56,15 @@ const Home: FC = () => {
   }
 
   const disableLogin = !ready || (ready && authenticated);
+
+  const { data: hash, sendTransaction } = useSendTransaction();
+
+  const handleSendTransaction = () => {
+    sendTransaction({
+      to: '0x24Ae0772a58dBE4F1447dff2EfFaAC800DD4dA83', // Replace with the recipient's address
+      value: parseEther('0.001'), // Example value: 0.01 ETH
+    });
+  };
 
   if (ready && !authenticated) {
     return (
@@ -83,11 +105,19 @@ const Home: FC = () => {
         <p><strong>Usuário:</strong> {user?.id}</p>
         <p><strong>Carteira:</strong> {user?.wallet?.address}</p>
         <p><strong>Email:</strong> {user?.email?.address}</p>
+        <p><strong>Address Wagmi:</strong> {address}</p>
         <p><strong>Chain:</strong> {CHAIN_CONFIG.name} (ID: {CHAIN_CONFIG.id})</p>
+      </div>
+
+      <div>
+        <button onClick={handleSendTransaction}>
+          Send 0.01 ETH with wagmi
+        </button>
+        {hash && <div>Transaction Hash: {hash}</div>}
       </div>
       
       <div className="mb-4">
-        <button className="bg-blue-500 text-white p-2 rounded-md mr-2" onClick={linkWallet}>
+        <button className="bg-blue-500 text-white p-2 rounded-md mr-2" onClick={linkWallet} disabled={address != undefined ? true : false}>
           Link Wallet
         </button>
         <button className="bg-blue-500 text-white p-2 rounded-md" onClick={linkEmail}>
