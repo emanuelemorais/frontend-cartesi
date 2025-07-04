@@ -12,8 +12,8 @@ export const privyConfig: PrivyClientConfig = {
     },
     supportedChains: [
       {
-        id: 31337,
-        name: 'Anvil Local',
+        id: 11155111,
+        name: 'Sepolia',
         nativeCurrency: {
           name: 'ETH',
           symbol: 'ETH',
@@ -21,14 +21,14 @@ export const privyConfig: PrivyClientConfig = {
         },
         rpcUrls: {
           default: {
-            http: ['http://127.0.0.1:8545']
+            http: ['https://sepolia.drpc.org']
           }
         }
       }
     ],
     defaultChain: {
-      id: 31337, // Chain ID padrão do Anvil/Hardhat
-      name: 'Anvil Local',
+      id: 11155111,
+      name: 'Sepolia',
       nativeCurrency: {
         name: 'ETH',
         symbol: 'ETH',
@@ -36,7 +36,7 @@ export const privyConfig: PrivyClientConfig = {
       },
       rpcUrls: {
         default: {
-          http: ['http://127.0.0.1:8545']
+          http: ['https://sepolia.drpc.org']
         }
       }
     }

@@ -1,6 +1,6 @@
-import { anvil } from "viem/chains";
+import { sepolia } from "viem/chains";
 
-export const FIXED_CHAIN = anvil;
+export const FIXED_CHAIN = sepolia;
 
 export const CHAIN_CONFIG = {
   id: FIXED_CHAIN.id,
