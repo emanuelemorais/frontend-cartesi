@@ -1,0 +1,56 @@
+import { FC, useEffect } from "react";
+import { usePrivy, useLogin, useWallets } from '@privy-io/react-auth';
+import { useNavigate } from "react-router-dom";
+
+// Mock de roles por endereço de carteira
+const userRoles: Record<string, "admin" | "investidor" | "creator"> = {
+  "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": "admin",
+  "0xinvestorwallet": "investidor",
+  "0xcreatorwallet": "creator",
+};
+
+const Home: FC = () => {
+  const { ready, authenticated } = usePrivy();
+  const { login } = useLogin();
+  const { wallets } = useWallets();
+  const navigate = useNavigate();
+
+  const userAddress = wallets?.[0]?.address?.toLowerCase();
+
+  useEffect(() => {
+    if (ready && authenticated && userAddress) {
+      const role = userRoles[userAddress]; // default
+      if (role === "admin") navigate("/admin");
+    //   else if (role === "creator") navigate("/panel");
+    //   else if (role === "investidor") navigate("/feed");
+      else navigate("/login");
+    }
+
+  }, [ready, authenticated, userAddress, navigate]);
+
+  if (!ready) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+
+  const disableLogin = !ready || (ready && authenticated);
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h1>
+          <button
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md font-medium transition-colors"
+            disabled={disableLogin}
+            onClick={() => login({
+              loginMethods: ['wallet', 'email'],
+              disableSignup: false
+            })}
+          >
+            Log in
+          </button>
+        </div>
+      </div>
+  );
+};
+
+export default Home; 
