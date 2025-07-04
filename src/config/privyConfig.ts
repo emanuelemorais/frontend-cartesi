@@ -21,7 +21,7 @@ export const privyConfig: PrivyClientConfig = {
         },
         rpcUrls: {
           default: {
-            http: ['https://sepolia.drpc.org']
+            http: ['https://eth-sepolia.g.alchemy.com/v2/gWR5B3tQIAJtNRcPPKT4d']
           }
         }
       }
@@ -36,7 +36,7 @@ export const privyConfig: PrivyClientConfig = {
       },
       rpcUrls: {
         default: {
-          http: ['https://sepolia.drpc.org']
+          http: ['https://eth-sepolia.g.alchemy.com/v2/gWR5B3tQIAJtNRcPPKT4d']
         }
       }
     }

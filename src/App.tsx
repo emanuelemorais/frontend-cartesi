@@ -7,6 +7,8 @@ import { Layout } from "./components/vlayer/layout";
 import LandingPage from "./pages/LandingPage";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
+import AdminLayout from "@/pages/AdminLayout";
+import AdminUsers from "./pages/AdminUsers";
 
 const App: FC = () => {
   return (
@@ -15,7 +17,11 @@ const App: FC = () => {
           <Routes>
             <Route path="/privy" element={<Home />} />
             <Route path="/landing" element={<LandingPage />} />
-            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Admin />} />
+              <Route path="users" element={<AdminUsers />} />
+              {/* Outras rotas de admin podem ser adicionadas aqui */}
+            </Route>
             <Route path="/login" element={<Login />} />
             {/* <Route path="/panel" element={<CreatorPanel />} /> */}
             {/* <Route path="/feed" element={<Feed />} /> */}

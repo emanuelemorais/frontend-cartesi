@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 // Mock de roles por endereço de carteira
 const userRoles: Record<string, "admin" | "investidor" | "creator"> = {
-  "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": "admin",
+  "0x4c3529aacE68b6F1cB514145a5058E5Dace69C75": "admin",
   "0xinvestorwallet": "investidor",
   "0xcreatorwallet": "creator",
 };
@@ -15,7 +15,7 @@ const Home: FC = () => {
   const { wallets } = useWallets();
   const navigate = useNavigate();
 
-  const userAddress = wallets?.[0]?.address?.toLowerCase();
+  const userAddress = wallets?.[0]?.address;
 
   useEffect(() => {
     if (ready && authenticated && userAddress) {

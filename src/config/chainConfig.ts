@@ -1,4 +1,4 @@
-import { sepolia } from "viem/chains";
+import { sepolia, anvil } from "viem/chains";
 
 export const FIXED_CHAIN = sepolia;
 
