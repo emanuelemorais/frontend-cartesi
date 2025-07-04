@@ -1,3 +1,4 @@
+import fs from "fs";
 import proverSpec from "./out/WebProofProver.sol/WebProofProver";
 import verifierSpec from "./out/WebProofVerifier.sol/WebProofVerifier";
 import {
@@ -8,12 +9,33 @@ import {
 
 const config = getConfig();
 
-const { prover, verifier } = await deployVlayerContracts({
-  proverSpec,
-  verifierSpec,
-});
+function getEnvValue(envPath: string, key: string): string | undefined {
+  if (!fs.existsSync(envPath)) return undefined;
+  const envContent = fs.readFileSync(envPath, "utf-8");
+  const match = envContent.match(new RegExp(`^${key}=(.*)$`, "m"));
+  if (match && match[1].trim() !== "") {
+    return match[1].trim();
+  }
+  return undefined;
+}
 
-await writeEnvVariables(".env", {
+const envPath = ".env";
+const proverAddress = getEnvValue(envPath, "VITE_PROVER_ADDRESS");
+const verifierAddress = getEnvValue(envPath, "VITE_VERIFIER_ADDRESS");
+
+let prover = proverAddress;
+let verifier = verifierAddress;
+
+if (!prover || !verifier) {
+  const deployed = await deployVlayerContracts({
+    proverSpec,
+    verifierSpec,
+  });
+  prover = prover || deployed.prover;
+  verifier = verifier || deployed.verifier;
+}
+
+await writeEnvVariables(envPath, {
   VITE_PROVER_ADDRESS: prover,
   VITE_VERIFIER_ADDRESS: verifier,
   VITE_CHAIN_NAME: config.chainName,
